@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оракул</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7ff;
+            color: #1a2942;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .prediction {
+            font-size: clamp(1.2rem, 3.2vw, 2rem);
+            font-weight: 600;
+            max-width: 760px;
+        }
+    </style>
+</head>
+<body>
+    <p id="prediction" class="prediction"></p>
+    <script>
+        const predictions = [
+            "Сьогодні вдалий день, щоб почати те, що ви давно відкладали.",
+            "Найближчим часом ви отримаєте приємну новину.",
+            "Ваша наполегливість приведе до сильного результату.",
+            "Скоро з'явиться можливість, яку не варто ігнорувати.",
+            "Спокійний крок сьогодні дасть великий прогрес завтра."
+        ];
+
+        const randomIndex = Math.floor(Math.random() * predictions.length);
+        document.getElementById("prediction").textContent = predictions[randomIndex];
+    </script>
+</body>
+</html>
