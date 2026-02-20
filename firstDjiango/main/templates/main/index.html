@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="uk">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,26 +17,26 @@
             padding: 1.5rem;
         }
 
-        .prediction {
-            font-size: clamp(1.2rem, 3.2vw, 2rem);
+        h1 {
+            margin-bottom: 1rem;
+            font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #0d8a6a;
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
             font-weight: 600;
-            max-width: 760px;
         }
     </style>
 </head>
 <body>
-    <p id="prediction" class="prediction"></p>
-    <script>
-        const predictions = [
-            "Сьогодні вдалий день, щоб почати те, що ви давно відкладали.",
-            "Найближчим часом ви отримаєте приємну новину.",
-            "Ваша наполегливість приведе до сильного результату.",
-            "Скоро з'явиться можливість, яку не варто ігнорувати.",
-            "Спокійний крок сьогодні дасть великий прогрес завтра."
-        ];
-
-        const randomIndex = Math.floor(Math.random() * predictions.length);
-        document.getElementById("prediction").textContent = predictions[randomIndex];
-    </script>
+    <main>
+        <h1>Ваш Оракул</h1>
+        <a class="btn" href="/future/">Отримати передбачення</a>
+    </main>
 </body>
 </html>
