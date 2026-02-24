@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Workers {% endblock %}
+
+{% block content %}
+    <h1>Team: </h1>
+    {% for worker in workers %}
+        <h2>{{worker.name}}: {{worker.salary}} $</h2>
+        <a class="btn btn-info" href="/team">Detailes</a>
+        <a class="btn btn-info" href="/team">Edit</a>
+        <a class="btn btn-info" href="/team">Delete</a>
+    {% endfor %}
+{% endblock %}

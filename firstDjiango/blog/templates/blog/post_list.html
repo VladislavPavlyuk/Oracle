@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Blog {% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Blog posts</h1>
+        <a class="btn btn-primary" href="{% url 'blog_create' %}">New post</a>
+    </div>
+
+    {% if posts %}
+        {% for post in posts %}
+            <article class="card mb-3 text-start">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{ post.author }}</h5>
+                    <p class="text-muted mb-2">{{ post.created_at|date:"d.m.Y H:i" }}</p>
+                    <p class="card-text mb-0">{{ post.text|linebreaksbr }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No posts yet. Create your first one.</p>
+    {% endif %}
+{% endblock %}

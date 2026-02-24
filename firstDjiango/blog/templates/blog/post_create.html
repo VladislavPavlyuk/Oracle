@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Create Post {% endblock %}
+
+{% block content %}
+    <h1 class="mb-3">Create a new post</h1>
+
+    <form method="post" class="text-start">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="{{ form.author.id_for_label }}">Author</label>
+            {{ form.author }}
+            {% if form.author.errors %}
+                <div class="text-danger small">{{ form.author.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="{{ form.text.id_for_label }}">Text</label>
+            {{ form.text }}
+            {% if form.text.errors %}
+                <div class="text-danger small">{{ form.text.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Save post</button>
+        <a href="{% url 'blog_list' %}" class="btn btn-secondary">Back</a>
+    </form>
+{% endblock %}
