@@ -11,11 +11,22 @@
     <h1 class="mb-3">Team members</h1>
 
     <div class="team-list">
+        <div class="team-row team-row-head">
+            <div class="team-data">
+                <span class="team-col team-col-name">Name</span>
+                <span class="team-col team-col-salary">Salary</span>
+                <span class="team-col team-col-note">Note</span>
+            </div>
+            <div class="team-actions">
+                <span class="team-col team-col-actions">Actions</span>
+            </div>
+        </div>
         {% for teamMember in team %}
             <div class="team-row">
                 <div class="team-data">
-                    <span class="team-name">{{ teamMember.name }}</span>
-                    <span class="team-salary">{{ teamMember.salary }} $</span>
+                    <span class="team-col team-col-name">{{ teamMember.name }}</span>
+                    <span class="team-col team-col-salary">{{ teamMember.salary }} $</span>
+                    <span class="team-col team-col-note">{{ teamMember.note|default:"-" }}</span>
                 </div>
                 <div class="team-actions">
                     <a class="btn btn-sm btn-info" href="/team">Details</a>

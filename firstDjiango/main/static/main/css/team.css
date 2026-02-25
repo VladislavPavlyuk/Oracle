@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    overflow-x: auto;
 }
 
 .team-row {
@@ -9,6 +10,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    min-width: 880px;
     padding: 0.8rem 1rem;
     border: 1px solid #e5e7eb;
     border-radius: 10px;
@@ -18,35 +20,53 @@
 .team-data {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    white-space: nowrap;
+    flex: 1;
 }
 
-.team-name {
+.team-row-head {
+    background-color: #f3f4f6;
     font-weight: 700;
 }
 
-.team-salary {
+.team-col {
+    display: inline-block;
+}
+
+.team-col-id {
+    width: 70px;
+}
+
+.team-col-name {
+    width: 220px;
+    font-weight: 700;
+}
+
+.team-col-salary {
+    width: 130px;
     color: #0a7d60;
     font-weight: 600;
+}
+
+.team-col-note {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .team-actions {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    white-space: nowrap;
     justify-content: flex-end;
+    min-width: 240px;
 }
 
-@media (max-width: 768px) {
-    .team-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .team-actions {
-        width: 100%;
-        justify-content: flex-start;
-    }
+.team-col-actions {
+    display: inline-block;
+    min-width: 180px;
+    text-align: center;
 }

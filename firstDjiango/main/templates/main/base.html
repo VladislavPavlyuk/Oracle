@@ -15,22 +15,25 @@
     <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
     {% block extra_css %} {% endblock %}
 </head>
-<body>
-    <nav class="navbar">
-        <img class="nav-logo" src="{% static 'main/img/logo.png' %}" alt="Логотип">
-        <div class="nav-links">
-            <a class="nav-link" href="{% url 'index' %}">Home</a>
-            <a class="nav-link" href="{% url 'team' %}">Team</a>
-            <a class="nav-link" href="{% url 'blog_list' %}">Blog</a>
-            <a class="nav-link" href="{% url 'about' %}">About us</a>
-            <a class="nav-link" href="#">Contacts</a>
+<body data-barba="wrapper">
+    <nav class="site-navbar">
+        <img class="site-nav-logo" src="{% static 'main/img/logo.png' %}" alt="Логотип">
+        <div class="site-nav-links">
+            <a class="site-nav-link" href="{% url 'index' %}">Home</a>
+            <a class="site-nav-link" href="{% url 'team' %}">Team</a>
+            <a class="site-nav-link" href="{% url 'blog_list' %}">Blog</a>
+            <a class="site-nav-link" href="{% url 'about' %}">About us</a>
+            <a class="site-nav-link" href="#">Contacts</a>
         </div>
     </nav>
     <main class="main-container">
-        <div class="content-box">
+        <div class="content-box" data-barba="container" data-barba-namespace="{% block namespace %}default{% endblock %}">
             {% block content %}
             {% endblock content %}
         </div>
     </main>
+    <div id="prediction-transition-hud" class="prediction-transition-hud" aria-hidden="true"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <script src="{% static 'main/js/barba-prediction.js' %}"></script>
 </body>
 </html>
