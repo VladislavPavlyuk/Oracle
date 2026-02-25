@@ -1,28 +1,11 @@
-﻿<!DOCTYPE html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Передбачення</title>
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f7ff;
-            color: #1a2942;
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .prediction {
-            font-size: clamp(1.2rem, 3.2vw, 2rem);
-            font-weight: 600;
-            max-width: 760px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'main/css/future.css' %}">
 </head>
 <body>
     <p id="prediction" class="prediction"></p>

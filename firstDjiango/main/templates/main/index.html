@@ -1,26 +1,13 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block title %} Home {% endblock %}
 
-
-<style>
-    h1 {
-        margin-bottom: 1rem;
-        font-size: clamp(1.4rem, 3.5vw, 2.2rem);
-    }
-
-    .btn {
-        display: inline-block;
-        text-decoration: none;
-        background: #0d8a6a;
-        color: #ffffff;
-        padding: 0.75rem 1rem;
-        border-radius: 10px;
-        font-weight: 600;
-    }
-</style>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/index.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h1>Press the button</h1>
+    <h1>Please, press the button</h1>
     <a class="btn btn-info" href="/future/">Predictions</a>
 {% endblock %}
