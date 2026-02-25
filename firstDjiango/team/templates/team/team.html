@@ -1,13 +1,30 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block title %} Team {% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/team.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h1>Team: </h1>
-    {% for teamMember in team %}
-        <h2>{{teamMember.name}}: {{teamMember.salary}} $</h2>
-        <a class="btn btn-info" href="/team">Detailes</a>
-        <a class="btn btn-info" href="/team">Edit</a>
-        <a class="btn btn-info" href="/team">Delete</a>
-    {% endfor %}
+    <h1 class="mb-3">Team members</h1>
+
+    <div class="team-list">
+        {% for teamMember in team %}
+            <div class="team-row">
+                <div class="team-data">
+                    <span class="team-name">{{ teamMember.name }}</span>
+                    <span class="team-salary">{{ teamMember.salary }} $</span>
+                </div>
+                <div class="team-actions">
+                    <a class="btn btn-sm btn-info" href="/team">Details</a>
+                    <a class="btn btn-sm btn-warning" href="/team">Edit</a>
+                    <a class="btn btn-sm btn-danger" href="/team">Delete</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No team members found.</p>
+        {% endfor %}
+    </div>
 {% endblock %}
