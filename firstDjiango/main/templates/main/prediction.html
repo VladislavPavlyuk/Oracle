@@ -1,13 +1,15 @@
+{% extends 'main/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction</title>
+
+{% block title %} Prediction {% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'main/css/prediction.css' %}">
-</head>
-<body>
-    <h2 class="prediction">Prediction: {{ prediction }}</h2>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+    <section class="prediction-wrap">
+        <h1 class="prediction-title">Prediction</h1>
+        <p class="prediction">{{ prediction }}</p>
+    </section>
+{% endblock %}

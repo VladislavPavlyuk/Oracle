@@ -17,7 +17,6 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#load_dotenv(BASE_DIR / 'firstDjiango.env')
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
@@ -124,3 +123,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+ABOUT_DEFAULT_MEMBERS = [
+    {
+        "name": "Alex Carter",
+        "role": "Product Manager",
+        "bio": "Coordinates roadmap priorities and keeps delivery focused on user value.",
+        "photo": "about/img/team/Alex Carter.jfif",
+    },
+    {
+        "name": "Mia Johnson",
+        "role": "Backend Engineer",
+        "bio": "Builds reliable APIs, data flows, and integration logic for core features.",
+        "photo": "about/img/team/Mia Johnson.jfif",
+    },
+    {
+        "name": "Liam Brown",
+        "role": "Frontend Engineer",
+        "bio": "Designs intuitive UI and implements responsive interfaces across the platform.",
+        "photo": "about/img/team/Liam Brown.jfif",
+    },
+    {
+        "name": "Emma Davis",
+        "role": "QA Engineer",
+        "bio": "Ensures quality through test design, regression checks, and release validation.",
+        "photo": "about/img/team/Emma Davis.jfif",
+    },
+]

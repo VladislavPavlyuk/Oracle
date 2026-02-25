@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} About Us {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'about/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1 class="about-title">About Us</h1>
+    <p class="about-subtitle">Meet the people behind our project.</p>
+
+    <div class="about-grid">
+        {% for member in members %}
+            <article class="about-card">
+                <img
+                    class="about-photo"
+                    src="{{ member.photo_url }}"
+                    alt="{{ member.name }}"
+                    onerror="this.onerror=null;this.src='{{ member.fallback_photo_url }}';"
+                >
+                <h2 class="about-name">{{ member.name }}</h2>
+                <p class="about-role">{{ member.role }}</p>
+                <p class="about-text">{{ member.bio }}</p>
+            </article>
+        {% endfor %}
+    </div>
+{% endblock %}
