@@ -1,7 +1,6 @@
-from django.shortcuts import render
-
 from django.views.generic import ListView
 from team.models import teamMember
+
 
 class TeamListView(ListView):
     model = teamMember
