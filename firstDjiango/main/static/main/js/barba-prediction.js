@@ -4,8 +4,59 @@
     }
 
     const hud = document.getElementById("prediction-transition-hud");
+    const STYLE_LOAD_TIMEOUT_MS = 4000;
 
-    function syncHeadFromNextPage(nextHtml) {
+    function withTimeout(promise, timeoutMs) {
+        return new Promise((resolve, reject) => {
+            const timer = setTimeout(() => reject(new Error("Style load timeout")), timeoutMs);
+            promise
+                .then((value) => {
+                    clearTimeout(timer);
+                    resolve(value);
+                })
+                .catch((error) => {
+                    clearTimeout(timer);
+                    reject(error);
+                });
+        });
+    }
+
+    function waitForStylesheet(link) {
+        return new Promise((resolve, reject) => {
+            if (link.sheet) {
+                resolve();
+                return;
+            }
+
+            const onLoad = () => {
+                cleanup();
+                resolve();
+            };
+
+            const onError = () => {
+                cleanup();
+                reject(new Error("Failed to load stylesheet: " + link.href));
+            };
+
+            const cleanup = () => {
+                link.removeEventListener("load", onLoad);
+                link.removeEventListener("error", onError);
+            };
+
+            link.addEventListener("load", onLoad, { once: true });
+            link.addEventListener("error", onError, { once: true });
+        });
+    }
+
+    function getPersistentStyleHrefs() {
+        return new Set(
+            Array.from(document.querySelectorAll("link[rel='stylesheet'][data-persistent-style]"))
+                .map((link) => link.getAttribute("href"))
+                .filter(Boolean)
+        );
+    }
+
+    async function syncHeadFromNextPage(nextHtml) {
         if (!nextHtml) {
             return;
         }
@@ -18,33 +69,47 @@
             document.title = nextTitle.textContent;
         }
 
-        const persistentHrefs = new Set(
-            Array.from(document.querySelectorAll("link[data-persistent-style]"))
-                .map((link) => link.getAttribute("href"))
-                .filter(Boolean)
+        const persistentHrefs = getPersistentStyleHrefs();
+        const desiredDynamicHrefs = Array.from(nextDocument.querySelectorAll("link[rel='stylesheet']"))
+            .map((link) => link.getAttribute("href"))
+            .filter((href) => href && !persistentHrefs.has(href));
+
+        const desiredSet = new Set(desiredDynamicHrefs);
+        const currentDynamicLinks = Array.from(
+            document.querySelectorAll("link[rel='stylesheet']:not([data-persistent-style])")
         );
 
-        document.querySelectorAll("link[rel='stylesheet']").forEach((link) => {
-            if (!link.hasAttribute("data-persistent-style")) {
-                link.remove();
+        const existingByHref = new Map();
+        currentDynamicLinks.forEach((link) => {
+            const href = link.getAttribute("href");
+            if (href && !existingByHref.has(href)) {
+                existingByHref.set(href, link);
             }
         });
 
-        nextDocument.querySelectorAll("link[rel='stylesheet']").forEach((nextLink) => {
-            const href = nextLink.getAttribute("href");
-            if (!href || persistentHrefs.has(href)) {
-                return;
-            }
+        const loadPromises = [];
 
-            const alreadyExists = document.querySelector(`link[rel='stylesheet'][href="${href}"]`);
-            if (alreadyExists) {
-                return;
+        desiredDynamicHrefs.forEach((href) => {
+            if (!existingByHref.has(href)) {
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = href;
+                link.setAttribute("data-dynamic-style", "true");
+                document.head.appendChild(link);
+                existingByHref.set(href, link);
+                loadPromises.push(waitForStylesheet(link));
             }
+        });
 
-            const newLink = document.createElement("link");
-            newLink.rel = "stylesheet";
-            newLink.href = href;
-            document.head.appendChild(newLink);
+        if (loadPromises.length > 0) {
+            await withTimeout(Promise.all(loadPromises), STYLE_LOAD_TIMEOUT_MS);
+        }
+
+        currentDynamicLinks.forEach((link) => {
+            const href = link.getAttribute("href");
+            if (!href || !desiredSet.has(href)) {
+                link.remove();
+            }
         });
     }
 
@@ -67,10 +132,10 @@
     function animateIn(container) {
         return container.animate(
             [
-                { opacity: 0, transform: "perspective(800px) rotateX(-8deg) scale(1.03)", filter: "blur(8px)" },
-                { opacity: 1, transform: "perspective(800px) rotateX(0deg) scale(1)", filter: "blur(0px)" }
+                { opacity: 0, transform: "translateY(8px) scale(0.995)", filter: "blur(2px)" },
+                { opacity: 1, transform: "translateY(0) scale(1)", filter: "blur(0px)" }
             ],
-            { duration: 560, easing: "cubic-bezier(.22,.61,.36,1)", fill: "forwards" }
+            { duration: 320, easing: "cubic-bezier(.22,.61,.36,1)", fill: "forwards" }
         ).finished;
     }
 
@@ -90,8 +155,12 @@
         ).finished;
     }
 
-    barba.hooks.beforeEnter((data) => {
-        syncHeadFromNextPage(data.next && data.next.html);
+    barba.hooks.beforeEnter(async (data) => {
+        try {
+            await syncHeadFromNextPage(data.next && data.next.html);
+        } catch (error) {
+            window.location.assign(data.next && data.next.url ? data.next.url.href : window.location.href);
+        }
     });
 
     barba.init({
@@ -114,6 +183,15 @@
                     if (hud) {
                         hud.classList.remove("is-active");
                     }
+                }
+            },
+            {
+                name: "default-fade",
+                async leave(data) {
+                    await animateOut(data.current.container);
+                },
+                async enter(data) {
+                    await animateIn(data.next.container);
                 }
             }
         ]
