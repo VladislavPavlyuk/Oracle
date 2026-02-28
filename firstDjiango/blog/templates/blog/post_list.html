@@ -1,24 +1,38 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block title %} Blog {% endblock %}
 
-{% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="mb-0">Blog posts</h1>
-        <a class="btn btn-primary" href="{% url 'blog_create' %}">New post</a>
-    </div>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/blog.css' %}">
+{% endblock %}
 
-    {% if posts %}
-        {% for post in posts %}
-            <article class="card mb-3 text-start">
-                <div class="card-body">
-                    <h5 class="card-title mb-1">{{ post.author }}</h5>
-                    <p class="text-muted mb-2">{{ post.created_at|date:"d.m.Y H:i" }}</p>
-                    <p class="card-text mb-0">{{ post.text|linebreaksbr }}</p>
-                </div>
-            </article>
-        {% endfor %}
-    {% else %}
-        <p>No posts yet. Create your first one.</p>
-    {% endif %}
+{% block content %}
+    <section class="blog-page">
+        <h1 class="blog-title">Blog Posts</h1>
+        <p class="blog-subtitle">Create, review, edit, and remove posts from one modern workspace.</p>
+
+        <div class="blog-toolbar">
+            <a class="blog-btn blog-btn-primary" href="{% url 'blog_create' %}">New Post</a>
+        </div>
+
+        {% if posts %}
+            {% for post in posts %}
+                <article class="blog-card text-start">
+                    <h5 class="blog-author">{{ post.author }}</h5>
+                    <p class="blog-meta">{{ post.created_at|date:"d.m.Y H:i" }}</p>
+                    <p class="blog-body">{{ post.text|linebreaksbr }}</p>
+                    <div class="blog-actions">
+                        <a class="blog-btn blog-btn-info" href="{% url 'blog_detail' post.id %}">Details</a>
+                        <a class="blog-btn blog-btn-warning" href="{% url 'blog_update' post.id %}">Edit</a>
+                        <a class="blog-btn blog-btn-danger" href="{% url 'blog_delete' post.id %}">Delete</a>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <div class="blog-card text-start">
+                <p class="blog-body mb-0">No posts yet. Create your first one.</p>
+            </div>
+        {% endif %}
+    </section>
 {% endblock %}

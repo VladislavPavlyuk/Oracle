@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Delete Team Member{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Delete Team Member</h1>
+        <p class="team-subtitle">Please confirm the action below.</p>
+
+        <div class="team-card">
+            <p>Are you sure you want to delete <strong>{{ teamMember.name }}</strong>?</p>
+            <p class="team-delete-warning">This action cannot be undone.</p>
+
+            <form method="post" class="team-form-actions">
+                {% csrf_token %}
+                <button type="submit" class="team-btn team-btn-danger">Delete</button>
+                <a href="{% url 'team:team' %}" class="team-btn team-btn-info">Cancel</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+ 

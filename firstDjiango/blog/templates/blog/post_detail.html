@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} Post Details {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/blog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="blog-page">
+        <h1 class="blog-title">Post Details</h1>
+        <p class="blog-subtitle">Review the full content and manage this entry.</p>
+
+        <article class="blog-card text-start">
+            <h5 class="blog-author">{{ post.author }}</h5>
+            <p class="blog-meta">{{ post.created_at|date:"d.m.Y H:i" }}</p>
+            <p class="blog-body">{{ post.text|linebreaksbr }}</p>
+
+            <div class="blog-actions">
+                <a class="blog-btn blog-btn-warning" href="{% url 'blog_update' post.id %}">Edit</a>
+                <a class="blog-btn blog-btn-danger" href="{% url 'blog_delete' post.id %}">Delete</a>
+                <a class="blog-btn blog-btn-info" href="{% url 'blog_list' %}">Back</a>
+            </div>
+        </article>
+    </section>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} teamMember {{teamMember.id}} {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Team Member</h1>
+        <p class="team-subtitle">Detailed profile information.</p>
+
+        <div class="team-card">
+            <div class="team-detail-grid">
+                <div class="team-detail-label">Name</div>
+                <div class="team-detail-value">{{ teamMember.name }}</div>
+
+                <div class="team-detail-label">Salary</div>
+                <div class="team-detail-value">${{ teamMember.salary }}</div>
+
+                <div class="team-detail-label">Note</div>
+                <div class="team-detail-value">{{ teamMember.note|default:"-" }}</div>
+            </div>
+
+            <div class="team-form-actions">
+                <a class="team-btn team-btn-warning" href="{% url 'team:team_update' teamMember.id %}">Edit</a>
+                <a class="team-btn team-btn-danger" href="{% url 'team:team_delete' teamMember.id %}">Delete</a>
+                <a class="team-btn team-btn-info" href="{% url 'team:team' %}">Back to List</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

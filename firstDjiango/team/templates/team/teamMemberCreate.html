@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Create Team Member{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Create Team Member</h1>
+        <p class="team-subtitle">Add a new teammate to your roster.</p>
+
+        <div class="team-card">
+            <form method="post" class="team-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="team-form-actions">
+                    <button type="submit" class="team-btn team-btn-primary">Create</button>
+                    <a href="{% url 'team:team' %}" class="team-btn team-btn-info">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

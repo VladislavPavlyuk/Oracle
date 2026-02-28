@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %} Create Post {% endblock %}
+{% block title %} Edit Post {% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'main/css/blog.css' %}">
@@ -9,8 +9,8 @@
 
 {% block content %}
     <section class="blog-page">
-        <h1 class="blog-title">Create Post</h1>
-        <p class="blog-subtitle">Share a new update with your audience.</p>
+        <h1 class="blog-title">Edit Post</h1>
+        <p class="blog-subtitle">Refine content and keep your post up to date.</p>
 
         <div class="blog-card text-start">
             <form method="post" class="blog-form">
@@ -30,8 +30,8 @@
                     {% endif %}
                 </div>
                 <div class="blog-actions">
-                    <button type="submit" class="blog-btn blog-btn-primary">Save Post</button>
-                    <a href="{% url 'blog_list' %}" class="blog-btn blog-btn-info">Back</a>
+                    <button type="submit" class="blog-btn blog-btn-primary">Save Changes</button>
+                    <a href="{% url 'blog_detail' post.id %}" class="blog-btn blog-btn-info">Cancel</a>
                 </div>
             </form>
         </div>

@@ -4,38 +4,48 @@
 {% block title %} Team {% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'main/css/team.css' %}">
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
 {% endblock %}
 
 {% block content %}
-    <h1 class="mb-3">Team members</h1>
+    <section class="team-page">
+    <h1 class="team-title">Team Members</h1>
+    <p class="team-subtitle">Manage your people, salaries, and notes in one place.</p>
 
-    <div class="team-list">
-        <div class="team-row team-row-head">
-            <div class="team-data">
-                <span class="team-col team-col-name">Name</span>
-                <span class="team-col team-col-salary">Salary</span>
-                <span class="team-col team-col-note">Note</span>
-            </div>
-            <div class="team-actions">
-                <span class="team-col team-col-actions">Actions</span>
-            </div>
-        </div>
-        {% for teamMember in team %}
-            <div class="team-row">
+    <div class="team-toolbar">
+        <a class="team-btn team-btn-primary" href="{% url 'team:team_create' %}">Create New Member</a>
+    </div>
+
+    <div class="team-card">
+        <div class="team-list">
+            <div class="team-row team-row-head">
                 <div class="team-data">
-                    <span class="team-col team-col-name">{{ teamMember.name }}</span>
-                    <span class="team-col team-col-salary">{{ teamMember.salary }} $</span>
-                    <span class="team-col team-col-note">{{ teamMember.note|default:"-" }}</span>
+                    <span class="team-col team-col-name">Name</span>
+                    <span class="team-col team-col-salary">Salary</span>
+                    <span class="team-col team-col-note">Note</span>
                 </div>
                 <div class="team-actions">
-                    <a class="btn btn-sm btn-info" href="/team">Details</a>
-                    <a class="btn btn-sm btn-warning" href="/team">Edit</a>
-                    <a class="btn btn-sm btn-danger" href="/team">Delete</a>
+                    <span class="team-col team-col-actions">Actions</span>
                 </div>
             </div>
-        {% empty %}
-            <p>No team members found.</p>
-        {% endfor %}
+
+            {% for teamMember in team %}
+                <div class="team-row">
+                    <div class="team-data">
+                        <span class="team-col team-col-name">{{ teamMember.name }}</span>
+                        <span class="team-col team-col-salary">${{ teamMember.salary }}</span>
+                        <span class="team-col team-col-note">{{ teamMember.note|default:"-" }}</span>
+                    </div>
+                    <div class="team-actions">
+                        <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Details</a>
+                        <a class="team-btn team-btn-warning" href="{% url 'team:team_update' teamMember.id %}">Edit</a>
+                        <a class="team-btn team-btn-danger" href="{% url 'team:team_delete' teamMember.id %}">Delete</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="team-empty">No team members yet. Create the first one.</p>
+            {% endfor %}
+        </div>
     </div>
+    </section>
 {% endblock %}

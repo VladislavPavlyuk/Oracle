@@ -5,6 +5,49 @@
 
     const hud = document.getElementById("prediction-transition-hud");
 
+    function syncHeadFromNextPage(nextHtml) {
+        if (!nextHtml) {
+            return;
+        }
+
+        const parser = new DOMParser();
+        const nextDocument = parser.parseFromString(nextHtml, "text/html");
+        const nextTitle = nextDocument.querySelector("title");
+
+        if (nextTitle) {
+            document.title = nextTitle.textContent;
+        }
+
+        const persistentHrefs = new Set(
+            Array.from(document.querySelectorAll("link[data-persistent-style]"))
+                .map((link) => link.getAttribute("href"))
+                .filter(Boolean)
+        );
+
+        document.querySelectorAll("link[rel='stylesheet']").forEach((link) => {
+            if (!link.hasAttribute("data-persistent-style")) {
+                link.remove();
+            }
+        });
+
+        nextDocument.querySelectorAll("link[rel='stylesheet']").forEach((nextLink) => {
+            const href = nextLink.getAttribute("href");
+            if (!href || persistentHrefs.has(href)) {
+                return;
+            }
+
+            const alreadyExists = document.querySelector(`link[rel='stylesheet'][href="${href}"]`);
+            if (alreadyExists) {
+                return;
+            }
+
+            const newLink = document.createElement("link");
+            newLink.rel = "stylesheet";
+            newLink.href = href;
+            document.head.appendChild(newLink);
+        });
+    }
+
     function touchesPrediction(data) {
         const fromPrediction = data.current && data.current.namespace === "prediction";
         const toPrediction = data.next && data.next.namespace === "prediction";
@@ -46,6 +89,10 @@
             { duration: 700, easing: "ease-out", fill: "forwards" }
         ).finished;
     }
+
+    barba.hooks.beforeEnter((data) => {
+        syncHeadFromNextPage(data.next && data.next.html);
+    });
 
     barba.init({
         transitions: [
