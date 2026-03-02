@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Contact {{ teamMember.name }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Contact</h1>
+        <p class="team-subtitle">{{ teamMember.name }}</p>
+
+        <div class="team-card">
+            <div class="team-detail-grid">
+                <div class="team-detail-label">Address</div>
+                <div class="team-detail-value">{{ contact.address|default:"-" }}</div>
+
+                <div class="team-detail-label">Home phone</div>
+                <div class="team-detail-value">{{ contact.home_phone|default:"-" }}</div>
+
+                <div class="team-detail-label">Mobile phone</div>
+                <div class="team-detail-value">{{ contact.mobile_phone|default:"-" }}</div>
+
+                <div class="team-detail-label">Email</div>
+                <div class="team-detail-value">{{ contact.email|default:"-" }}</div>
+            </div>
+
+            <div class="team-form-actions">
+                <a class="team-btn team-btn-warning" href="{% url 'team:contact_update' teamMember.id contact.id %}">Update</a>
+                <a class="team-btn team-btn-danger" href="{% url 'team:contact_delete' teamMember.id contact.id %}">Delete</a>
+                <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Back to Member</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

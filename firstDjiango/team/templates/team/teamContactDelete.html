@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Delete Contact{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Delete Contact</h1>
+        <p class="team-subtitle">{{ teamMember.name }}</p>
+
+        <div class="team-card">
+            <p>Are you sure you want to delete this contact?</p>
+            <p class="team-delete-warning">This action cannot be undone.</p>
+
+            <form method="post" class="team-form-actions">
+                {% csrf_token %}
+                <button type="submit" class="team-btn team-btn-danger">Delete Contact</button>
+                <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Cancel</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}

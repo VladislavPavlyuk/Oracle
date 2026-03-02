@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Resume {{ teamMember.name }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Resume</h1>
+        <p class="team-subtitle">{{ teamMember.name }}</p>
+
+        <div class="team-card">
+            <div class="team-detail-grid">
+                <div class="team-detail-label">Position</div>
+                <div class="team-detail-value">{{ resume.position }}</div>
+
+                <div class="team-detail-label">Experience</div>
+                <div class="team-detail-value">{{ resume.experience_years }} years</div>
+
+                <div class="team-detail-label">Summary</div>
+                <div class="team-detail-value">{{ resume.summary|default:"-" }}</div>
+
+                <div class="team-detail-label">Education</div>
+                <div class="team-detail-value">{{ resume.education|default:"-" }}</div>
+
+                <div class="team-detail-label">Skills</div>
+                <div class="team-detail-value">{{ resume.skills|default:"-" }}</div>
+            </div>
+
+            <div class="team-form-actions">
+                <a class="team-btn team-btn-warning" href="{% url 'team:resume_update' teamMember.id %}">Edit Resume</a>
+                <a class="team-btn team-btn-danger" href="{% url 'team:resume_delete' teamMember.id %}">Delete Resume</a>
+                <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Back to Member</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

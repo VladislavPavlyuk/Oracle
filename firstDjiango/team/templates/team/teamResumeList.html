@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}All Resumes{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}?v=20260302-01">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">All Resumes</h1>
+        <p class="team-subtitle">List of all team member resumes.</p>
+
+        <div class="team-card">
+            {% if resumes %}
+                <div class="team-resume-grid">
+                    <div class="team-resume-head">Team member</div>
+                    <div class="team-resume-head">Position</div>
+                    <div class="team-resume-head">Experience</div>
+                    <div class="team-resume-head team-resume-head-actions">Actions</div>
+
+                    {% for resume in resumes %}
+                        <div class="team-resume-cell">{{ resume.team_member.name }}</div>
+                        <div class="team-resume-cell">{{ resume.position }}</div>
+                        <div class="team-resume-cell team-col-resume-exp">{{ resume.experience_years }} years</div>
+                        <div class="team-resume-cell team-resume-actions">
+                            <a class="team-btn team-btn-primary" href="{% url 'team:resume_detail' resume.team_member.id %}">Resume</a>
+                            <a class="team-btn team-btn-info" href="{% url 'team:team_detail' resume.team_member.id %}">Team Member</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="team-empty">No resumes found.</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

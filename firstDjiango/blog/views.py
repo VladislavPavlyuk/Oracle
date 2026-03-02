@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
 from blog.forms import PostCreateForm
 from blog.models import Post
 
@@ -13,7 +14,9 @@ def post_create(request):
         form = PostCreateForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Post created successfully.")
             return redirect("blog_list")
+        messages.error(request, "Failed to create post. Please check the form.")
     else:
         form = PostCreateForm()
 
@@ -32,7 +35,9 @@ def post_update(request, pk):
         form = PostCreateForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
+            messages.success(request, "Post updated successfully.")
             return redirect("blog_list")
+        messages.error(request, "Failed to update post. Please check the form.")
     else:
         form = PostCreateForm(instance=post)
 
@@ -44,6 +49,7 @@ def post_delete(request, pk):
 
     if request.method == "POST":
         post.delete()
+        messages.success(request, "Post deleted successfully.")
         return redirect("blog_list")
 
     return render(request, "blog/post_delete.html", {"post": post})

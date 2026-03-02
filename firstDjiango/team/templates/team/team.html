@@ -8,12 +8,20 @@
 {% endblock %}
 
 {% block content %}
+
     <section class="team-page">
     <h1 class="team-title">Team Members</h1>
     <p class="team-subtitle">Manage your people, salaries, and notes in one place.</p>
 
     <div class="team-toolbar">
-        <a class="team-btn team-btn-primary" href="{% url 'team:team_create' %}">Create New Member</a>
+        <a class="team-btn team-btn-info" href="{% url 'team:resume_list' %}">All Resumes</a>
+        <form method="post" action="{% url 'team:generate_data' %}">
+            {% csrf_token %}
+            <button type="submit" class="team-btn team-btn-warning">Generate data</button>
+        </form>
+        {% if perms.team.add_teamMember %}
+            <a class="team-btn team-btn-primary" href="{% url 'team:team_create' %}">Create New Member</a>
+        {% endif %}
     </div>
 
     <div class="team-card">

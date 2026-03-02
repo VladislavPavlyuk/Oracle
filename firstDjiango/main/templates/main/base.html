@@ -15,6 +15,12 @@
     >
     <link rel="stylesheet" href="{% static 'main/css/base.css' %}" data-persistent-style="true">
     {% block extra_css %} {% endblock %}
+    <style>
+        .swal2-popup.swal-error-toast .swal2-title,
+        .swal2-popup.swal-error-toast .swal2-html-container {
+            color: #991b1b !important;
+        }
+    </style>
 </head>
 <body>
     <nav class="site-navbar">
@@ -33,5 +39,35 @@
             {% endblock content %}
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const alerts = [
+                    {% for message in messages %}
+                        {
+                            icon: "{% if 'success' in message.tags %}success{% elif 'error' in message.tags %}error{% elif 'warning' in message.tags %}warning{% else %}info{% endif %}",
+                            title: "{{ message|escapejs }}",
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3500,
+                            timerProgressBar: true,
+                            {% if 'error' in message.tags %}
+                                background: "#fee2e2",
+                                color: "#991b1b",
+                                iconColor: "#dc2626",
+                                customClass: {
+                                    popup: "swal-error-toast"
+                                }
+                            {% endif %}
+                        }{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ];
+
+                alerts.forEach((alertConfig) => Swal.fire(alertConfig));
+            });
+        </script>
+    {% endif %}
 </body>
 </html>

@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ form_mode }} Contact{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">{{ form_mode }} Contact</h1>
+        <p class="team-subtitle">{{ teamMember.name }}</p>
+
+        <div class="team-card">
+            <form method="post" class="team-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="team-form-actions">
+                    <button type="submit" class="team-btn team-btn-primary">{{ form_mode }}</button>
+                    <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

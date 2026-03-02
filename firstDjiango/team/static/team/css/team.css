@@ -51,6 +51,11 @@
     margin: 1.1rem 0 1.2rem;
     display: flex;
     justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.team-toolbar form {
+    margin: 0;
 }
 
 .team-card {
@@ -129,12 +134,58 @@
     align-items: center;
     gap: 0.45rem;
     justify-content: flex-end;
-    min-width: 250px;
+    min-width: 200px;
 }
 
 .team-col-actions {
     width: 200px;
     font-weight: 700;
+}
+
+.team-col-resume-member {
+    width: 240px;
+    font-weight: 500;
+}
+
+.team-col-resume-position {
+    width: 220px;
+}
+
+.team-col-resume-exp {
+    color: var(--team-accent);
+    font-weight: 500;
+}
+
+.team-card .team-resume-grid {
+    display: grid;
+    grid-template-columns: 200px 200px 110px 220px;
+    align-items: center;
+}
+
+.team-card .team-resume-head {
+    font-weight: 700;
+    color: var(--team-text);
+    padding: 0.8rem 0.6rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.2);
+}
+
+.team-card .team-resume-head-actions {
+    text-align: center;
+}
+
+.team-card .team-resume-cell {
+    color: var(--team-text);
+    padding: 0.85rem 0.6rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.09);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.team-card .team-resume-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
 }
 
 .team-btn {
@@ -197,6 +248,13 @@
     color: var(--team-text);
 }
 
+.team-detail-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
 .team-form {
     margin-top: 1rem;
 }
@@ -246,5 +304,22 @@
 
     .team-card {
         overflow-x: auto;
+    }
+
+    .team-detail-inline {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .team-card .team-resume-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-card .team-resume-head-actions {
+        text-align: left;
+    }
+
+    .team-card .team-resume-actions {
+        justify-content: flex-start;
     }
 }

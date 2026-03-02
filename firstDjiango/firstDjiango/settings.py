@@ -113,6 +113,10 @@ USE_TZ = True
 # static files
 STATIC_URL = 'static/'
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'
+
 ABOUT_DEFAULT_MEMBERS = [
     {
         "name": "Alex Carter",
