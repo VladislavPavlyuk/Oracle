@@ -28,10 +28,10 @@ class MessageOnFormMixin:
 class MessageOnDeleteMixin:
     delete_success_message = None
 
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
+    def form_valid(self, form):
+        response = super().form_valid(form)
         if self.delete_success_message:
-            messages.success(request, self.delete_success_message)
+            messages.success(self.request, self.delete_success_message)
         return response
 
 
@@ -73,7 +73,7 @@ class TeamDeleteView(MessageOnDeleteMixin, PermissionRequiredMixin, DeleteView):
     template_name = "team/teamMemberDelete.html"
     context_object_name = "teamMember"
     success_url = reverse_lazy("team:team")
-    permission_required = "team.delete_team"
+    permission_required = "team.delete_teammember"
     delete_success_message = "Team member deleted successfully."
 
 

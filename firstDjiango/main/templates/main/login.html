@@ -1,16 +1,28 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
-{% endblock %}
-
-{% block title %} Authentication {% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
-    </form>
+    <section class="auth-section">
+        <h2 class="auth-title">Login</h2>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            {% for field in form %}
+                <div class="auth-form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="auth-helptext">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="auth-submit-btn">Login</button>
+            <p class="auth-extra-link">No account yet? <a href="{% url 'register' %}">Register</a></p>
+        </form>
+    </section>
 {% endblock %}

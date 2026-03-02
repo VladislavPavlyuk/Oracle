@@ -13,7 +13,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         crossorigin="anonymous"
     >
-    <link rel="stylesheet" href="{% static 'main/css/base.css' %}" data-persistent-style="true">
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}?v=20260302-02" data-persistent-style="true">
     {% block extra_css %} {% endblock %}
     <style>
         .swal2-popup.swal-error-toast .swal2-title,
@@ -31,6 +31,18 @@
             <a class="site-nav-link" href="{% url 'blog_list' %}">Blog</a>
             <a class="site-nav-link" href="{% url 'about' %}">About us</a>
             <a class="site-nav-link" href="#">Contacts</a>
+        </div>
+        <div class="site-nav-auth">
+            {% if user.is_authenticated %}
+                <span class="site-nav-username">{{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}" class="site-nav-auth-form">
+                    {% csrf_token %}
+                    <button type="submit" class="site-nav-auth-btn">Logout</button>
+                </form>
+            {% else %}
+                <a class="site-nav-auth-link" href="{% url 'login' %}">Login</a>
+                <a class="site-nav-auth-link" href="{% url 'register' %}">Register</a>
+            {% endif %}
         </div>
     </nav>
     <main class="main-container">

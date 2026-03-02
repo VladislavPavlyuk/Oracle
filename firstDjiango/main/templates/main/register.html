@@ -4,29 +4,25 @@
 {% block title %} Register {% endblock %}
 
 {% block content %}
-    <h2>Create account</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{form.non_field_errors}}
+    <section class="auth-section">
+        <h2 class="auth-title">Create account</h2>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
 
-        {% for field in form %}
-            <div class="form-wraper">
-                {{field.label_tag}}
-                {{field}}
-                {{form.username.errors}}
-                {{form.username.label_tag}}
-                {{form.username}}
-                {{form.email.errors}}
-                {{form.email.label_tag}}
-                {{form.email}}
-                {{form.password1.errors}}
-                {{form.password1.label_tag}}
-                {{form.password1}}
-                {{form.password2.errors}}
-                {{form.password2.label_tag}}
-                {{form.password2}}
-          </div>
-        {{ form.as_p }}
-        <input type="submit" value="Register">
-    </form>
+            {% for field in form %}
+                <div class="auth-form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="auth-helptext">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="auth-submit-btn">Register</button>
+            <p class="auth-extra-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </form>
+    </section>
 {% endblock %}

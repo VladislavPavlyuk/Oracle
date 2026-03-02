@@ -19,7 +19,7 @@
             {% csrf_token %}
             <button type="submit" class="team-btn team-btn-warning">Generate data</button>
         </form>
-        {% if perms.team.add_teamMember %}
+        {% if perms.team.add_teammember %}
             <a class="team-btn team-btn-primary" href="{% url 'team:team_create' %}">Create New Member</a>
         {% endif %}
     </div>
