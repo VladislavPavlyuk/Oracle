@@ -10,7 +10,16 @@
 
 {% block content %}
     <section class="prediction-wrap">
-        <h1 class="prediction-title">Prediction</h1>
-        <p class="prediction">{{ prediction }}</p>
+
+        <p class="prediction">
+            {% if user.is_authenticated %}
+                <h1 class="prediction-title">
+                    Prediction for {{ user.username }}
+                </h1>
+                <h1> {{ prediction }}</h1>
+            {% else %}
+                {{ prediction }}
+            {% endif %}
+        </p>
     </section>
 {% endblock %}
