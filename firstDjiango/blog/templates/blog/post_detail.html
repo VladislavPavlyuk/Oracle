@@ -18,8 +18,12 @@
             <p class="blog-body">{{ post.text|linebreaksbr }}</p>
 
             <div class="blog-actions">
-                <a class="blog-btn blog-btn-warning" href="{% url 'blog_update' post.id %}">Edit</a>
-                <a class="blog-btn blog-btn-danger" href="{% url 'blog_delete' post.id %}">Delete</a>
+                {% if perms.blog.change_post %}
+                    <a class="blog-btn blog-btn-warning" href="{% url 'blog_update' post.id %}">Edit</a>
+                {% endif %}
+                {% if perms.blog.delete_post %}
+                    <a class="blog-btn blog-btn-danger" href="{% url 'blog_delete' post.id %}">Delete</a>
+                {% endif %}
                 <a class="blog-btn blog-btn-info" href="{% url 'blog_list' %}">Back</a>
             </div>
         </article>

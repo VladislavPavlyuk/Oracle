@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
@@ -43,7 +43,9 @@ class TeamListView(ListView):
     context_object_name = "team"
 
 
-class TeamGenerateDataView(View):
+class TeamGenerateDataView(PermissionRequiredMixin, View):
+    permission_required = "team.add_teammember"
+
     def post(self, request, *args, **kwargs):
         TeamDataFabric.generate_team_data(amount=20)
         messages.success(request, "20 team members with resumes and contacts were generated.")
@@ -61,7 +63,7 @@ class TeamDetailView(DetailView):
         return context
 
 
-class TeamEditView(MessageOnFormMixin, UpdateView):
+class TeamEditView(MessageOnFormMixin, PermissionRequiredMixin, UpdateView):
     model = TeamMember
     template_name = "team/teamMemberEdit.html"
     context_object_name = "teamMember"
@@ -112,7 +114,7 @@ class TeamResumeListView(ListView):
         return Resume.objects.select_related("team_member").all()
 
 
-class TeamResumeCreateView(MessageOnFormMixin, CreateView):
+class TeamResumeCreateView(MessageOnFormMixin, PermissionRequiredMixin, CreateView):
     model = Resume
     template_name = "team/teamResumeForm.html"
     fields = ["position", "summary", "experience_years", "education", "skills"]
@@ -139,12 +141,13 @@ class TeamResumeCreateView(MessageOnFormMixin, CreateView):
         return context
 
 
-class TeamResumeUpdateView(UpdateView):
+class TeamResumeUpdateView(PermissionRequiredMixin, UpdateView):
     model = Resume
     template_name = "team/teamResumeForm.html"
     context_object_name = "resume"
     fields = ["position", "summary", "experience_years", "education", "skills"]
     success_message = "Resume updated successfully."
+    permission_required = "team.change_resume"
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -168,11 +171,12 @@ class TeamResumeUpdateView(UpdateView):
         return context
 
 
-class TeamResumeDeleteView(MessageOnDeleteMixin, DeleteView):
+class TeamResumeDeleteView(MessageOnDeleteMixin, PermissionRequiredMixin, DeleteView):
     model = Resume
     template_name = "team/teamResumeDelete.html"
     context_object_name = "resume"
     delete_success_message = "Resume deleted successfully."
+    permission_required = "team.delete_resume"
 
     def get_object(self, queryset=None):
         return get_object_or_404(Resume, team_member_id=self.kwargs["member_pk"])
@@ -204,11 +208,12 @@ class TeamContactDetailView(DetailView):
         return context
 
 
-class TeamContactCreateView(MessageOnFormMixin, CreateView):
+class TeamContactCreateView(MessageOnFormMixin, PermissionRequiredMixin, CreateView):
     model = Contact
     template_name = "team/teamContactForm.html"
     fields = ["address", "home_phone", "mobile_phone", "email"]
     success_message = "Contact created successfully."
+    permission_required = "team.add_contact"
 
     def dispatch(self, request, *args, **kwargs):
         self.team_member = get_object_or_404(TeamMember, pk=self.kwargs["member_pk"])
@@ -228,12 +233,13 @@ class TeamContactCreateView(MessageOnFormMixin, CreateView):
         return context
 
 
-class TeamContactUpdateView(UpdateView):
+class TeamContactUpdateView(PermissionRequiredMixin, UpdateView):
     model = Contact
     template_name = "team/teamContactForm.html"
     context_object_name = "contact"
     fields = ["address", "home_phone", "mobile_phone", "email"]
     success_message = "Contact updated successfully."
+    permission_required = "team.change_contact"
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -261,11 +267,12 @@ class TeamContactUpdateView(UpdateView):
         return context
 
 
-class TeamContactDeleteView(MessageOnDeleteMixin, DeleteView):
+class TeamContactDeleteView(MessageOnDeleteMixin, PermissionRequiredMixin, DeleteView):
     model = Contact
     template_name = "team/teamContactDelete.html"
     context_object_name = "contact"
     delete_success_message = "Contact deleted successfully."
+    permission_required = "team.delete_contact"
 
     def get_object(self, queryset=None):
         return get_object_or_404(
@@ -284,3 +291,22 @@ class TeamContactDeleteView(MessageOnDeleteMixin, DeleteView):
 
 class TeamSearchView(View):
     template_name = "team/teamSearch.html"
+
+    def get(self, request, *args, **kwargs):
+        form = TeamSearchForm(request.GET or None)
+        team = TeamMember.objects.all()
+
+        if form.is_valid():
+            name = (form.cleaned_data.get("name") or "").strip()
+            min_salary = form.cleaned_data.get("min_salary")
+            max_salary = form.cleaned_data.get("max_salary")
+
+            if name:
+                team = team.filter(name__icontains=name)
+            if min_salary is not None:
+                team = team.filter(salary__gte=min_salary)
+            if max_salary is not None:
+                team = team.filter(salary__lte=max_salary)
+
+        context = {"form": form, "team": team}
+        return render(request, self.template_name, context)

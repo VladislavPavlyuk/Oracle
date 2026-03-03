@@ -28,8 +28,12 @@
             </div>
 
             <div class="team-form-actions">
-                <a class="team-btn team-btn-warning" href="{% url 'team:contact_update' teamMember.id contact.id %}">Update</a>
-                <a class="team-btn team-btn-danger" href="{% url 'team:contact_delete' teamMember.id contact.id %}">Delete</a>
+                {% if perms.team.change_contact %}
+                    <a class="team-btn team-btn-warning" href="{% url 'team:contact_update' teamMember.id contact.id %}">Update</a>
+                {% endif %}
+                {% if perms.team.delete_contact %}
+                    <a class="team-btn team-btn-danger" href="{% url 'team:contact_delete' teamMember.id contact.id %}">Delete</a>
+                {% endif %}
                 <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Back to Member</a>
             </div>
         </div>

@@ -37,7 +37,7 @@
                         </span>
                         {% if resume %}
                             <a class="team-btn team-btn-primary" href="{% url 'team:resume_detail' teamMember.id %}">Resume Details</a>
-                        {% else %}
+                        {% elif perms.team.add_resume %}
                             <a class="team-btn team-btn-info" href="{% url 'team:resume_create' teamMember.id %}">Create Resume</a>
                         {% endif %}
                     </div>
@@ -57,7 +57,7 @@
                         </span>
                         {% if teamMember.contacts.all %}
                             <a class="team-btn team-btn-primary" href="{% url 'team:contact_detail' teamMember.id teamMember.contacts.first.id %}">Contact Details</a>
-                        {% else %}
+                        {% elif perms.team.add_contact %}
                             <a class="team-btn team-btn-info" href="{% url 'team:contact_create' teamMember.id %}">Create Contact</a>
                         {% endif %}
                     </div>
@@ -65,8 +65,12 @@
             </div>
 
             <div class="team-form-actions">
-                <a class="team-btn team-btn-warning" href="{% url 'team:team_update' teamMember.id %}">Edit</a>
-                <a class="team-btn team-btn-danger" href="{% url 'team:team_delete' teamMember.id %}">Delete</a>
+                {% if perms.team.change_teammember %}
+                    <a class="team-btn team-btn-warning" href="{% url 'team:team_update' teamMember.id %}">Edit</a>
+                {% endif %}
+                {% if perms.team.delete_teammember %}
+                    <a class="team-btn team-btn-danger" href="{% url 'team:team_delete' teamMember.id %}">Delete</a>
+                {% endif %}
                 <a class="team-btn team-btn-info" href="{% url 'team:team' %}">Back to List</a>
             </div>
         </div>

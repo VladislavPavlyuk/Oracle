@@ -31,8 +31,12 @@
             </div>
 
             <div class="team-form-actions">
-                <a class="team-btn team-btn-warning" href="{% url 'team:resume_update' teamMember.id %}">Edit Resume</a>
-                <a class="team-btn team-btn-danger" href="{% url 'team:resume_delete' teamMember.id %}">Delete Resume</a>
+                {% if perms.team.change_resume %}
+                    <a class="team-btn team-btn-warning" href="{% url 'team:resume_update' teamMember.id %}">Edit Resume</a>
+                {% endif %}
+                {% if perms.team.delete_resume %}
+                    <a class="team-btn team-btn-danger" href="{% url 'team:resume_delete' teamMember.id %}">Delete Resume</a>
+                {% endif %}
                 <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Back to Member</a>
             </div>
         </div>

@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from blog.forms import PostCreateForm
 from blog.models import Post
 
@@ -9,6 +10,7 @@ def post_list(request):
     return render(request, "blog/post_list.html", {"posts": posts})
 
 
+@permission_required("blog.add_post")
 def post_create(request):
     if request.method == "POST":
         form = PostCreateForm(request.POST)
@@ -28,6 +30,7 @@ def post_detail(request, pk):
     return render(request, "blog/post_detail.html", {"post": post})
 
 
+@permission_required("blog.change_post")
 def post_update(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
@@ -44,6 +47,7 @@ def post_update(request, pk):
     return render(request, "blog/post_update.html", {"form": form, "post": post})
 
 
+@permission_required("blog.delete_post")
 def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
 

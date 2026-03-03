@@ -12,9 +12,11 @@
         <h1 class="blog-title">Blog Posts</h1>
         <p class="blog-subtitle">Create, review, edit, and remove posts from one modern workspace.</p>
 
-        <div class="blog-toolbar">
-            <a class="blog-btn blog-btn-primary" href="{% url 'blog_create' %}">New Post</a>
-        </div>
+        {% if perms.blog.add_post %}
+            <div class="blog-toolbar">
+                <a class="blog-btn blog-btn-primary" href="{% url 'blog_create' %}">New Post</a>
+            </div>
+        {% endif %}
 
         {% if posts %}
             {% for post in posts %}
@@ -24,8 +26,12 @@
                     <p class="blog-body">{{ post.text|linebreaksbr }}</p>
                     <div class="blog-actions">
                         <a class="blog-btn blog-btn-info" href="{% url 'blog_detail' post.id %}">Details</a>
-                        <a class="blog-btn blog-btn-warning" href="{% url 'blog_update' post.id %}">Edit</a>
-                        <a class="blog-btn blog-btn-danger" href="{% url 'blog_delete' post.id %}">Delete</a>
+                        {% if perms.blog.change_post %}
+                            <a class="blog-btn blog-btn-warning" href="{% url 'blog_update' post.id %}">Edit</a>
+                        {% endif %}
+                        {% if perms.blog.delete_post %}
+                            <a class="blog-btn blog-btn-danger" href="{% url 'blog_delete' post.id %}">Delete</a>
+                        {% endif %}
                     </div>
                 </article>
             {% endfor %}
