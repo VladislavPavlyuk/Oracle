@@ -15,13 +15,15 @@
 
     <div class="team-toolbar">
         <a class="team-btn team-btn-info" href="{% url 'team:resume_list' %}">All Resumes</a>
-        <form method="post" action="{% url 'team:generate_data' %}">
-            {% csrf_token %}
-            <button type="submit" class="team-btn team-btn-warning">Generate data</button>
-        </form>
+            <form method="post" action="{% url 'team:generate_data' %}">
+                {% csrf_token %}
+                <button type="submit" class="team-btn team-btn-warning">Generate data</button>
+
+            </form>
         {% if perms.team.add_teammember %}
             <a class="team-btn team-btn-primary" href="{% url 'team:team_create' %}">Create New Member</a>
         {% endif %}
+        <a class="team-btn team-btn-danger" href="{% url 'team:team_search' %}">Search</a>
     </div>
 
     <div class="team-card">
@@ -46,8 +48,14 @@
                     </div>
                     <div class="team-actions">
                         <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Details</a>
-                        <a class="team-btn team-btn-warning" href="{% url 'team:team_update' teamMember.id %}">Edit</a>
-                        <a class="team-btn team-btn-danger" href="{% url 'team:team_delete' teamMember.id %}">Delete</a>
+
+                        {% if perms.team.change_teammember %}
+                            <a class="team-btn team-btn-warning" href="{% url 'team:team_update' teamMember.id %}">Edit</a>
+                        {% endif %}
+
+                        {% if perms.team.delete_teammember %}
+                            <a class="team-btn team-btn-danger" href="{% url 'team:team_delete' teamMember.id %}">Delete</a>
+                        {% endif %}
                     </div>
                 </div>
             {% empty %}

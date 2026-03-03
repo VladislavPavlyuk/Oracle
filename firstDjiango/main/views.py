@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView, CreateView
 from django.contrib.auth.views import LoginView
 
@@ -59,10 +60,12 @@ class CustomLoginView(LoginView):
         return response
 
 
-class CustomRegisterView(CreateView):
+class CustomRegisterView(PermissionRequiredMixin, CreateView):
     form_class = UserCreationForm
     template_name = "main/register.html"
     success_url = reverse_lazy("index")
+    permission_required = "auth.add_user"
+
     def form_valid(self, form):
         response = super().form_valid(form)
         login(self.request, self.object)

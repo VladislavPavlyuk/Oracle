@@ -15,7 +15,7 @@ from team.views import (
     TeamResumeDeleteView,
     TeamResumeDetailView,
     TeamResumeListView,
-    TeamResumeUpdateView,
+    TeamResumeUpdateView, TeamSearchView,
 )
 
 app_name = "team"
@@ -36,5 +36,5 @@ urlpatterns = [
     path("team/<int:member_pk>/contacts/<int:contact_pk>/", TeamContactDetailView.as_view(), name="contact_detail"),
     path("team/<int:member_pk>/contacts/<int:contact_pk>/update/", TeamContactUpdateView.as_view(), name="contact_update"),
     path("team/<int:member_pk>/contacts/<int:contact_pk>/delete/", TeamContactDeleteView.as_view(), name="contact_delete"),
-
+    path('search/', TeamSearchView.as_view(), name='team_search'),
 ]

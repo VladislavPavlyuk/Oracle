@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} Search Team Member {% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'team/css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-page">
+        <h1 class="team-title">Search Team Members</h1>
+        <p class="team-subtitle">Filter by name and salary range.</p>
+
+        <div class="team-card">
+            <form method="get" class="team-form">
+                {{ form.as_p }}
+                <div class="team-form-actions">
+                    <button type="submit" class="team-btn team-btn-primary">Search</button>
+                    <a class="team-btn team-btn-info" href="{% url 'team:team' %}">Back to List</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="team-card" style="margin-top: 1rem;">
+            <div class="team-list">
+                <div class="team-row team-row-head">
+                    <div class="team-data">
+                        <span class="team-col team-col-name">Name</span>
+                        <span class="team-col team-col-salary">Salary</span>
+                        <span class="team-col team-col-note">Note</span>
+                    </div>
+                    <div class="team-actions">
+                        <span class="team-col team-col-actions">Actions</span>
+                    </div>
+                </div>
+
+                {% for teamMember in team %}
+                    <div class="team-row">
+                        <div class="team-data">
+                            <span class="team-col team-col-name">{{ teamMember.name }}</span>
+                            <span class="team-col team-col-salary">${{ teamMember.salary }}</span>
+                            <span class="team-col team-col-note">{{ teamMember.note|default:"-" }}</span>
+                        </div>
+                        <div class="team-actions">
+                            <a class="team-btn team-btn-info" href="{% url 'team:team_detail' teamMember.id %}">Details</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="team-empty">No matching team members found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -5,6 +5,8 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views import View
+from team.forms import TeamMemberCreateForm, TeamSearchForm
 from team.models import Contact, Resume, TeamMember
 from team.fabric import TeamDataFabric
 
@@ -66,6 +68,7 @@ class TeamEditView(MessageOnFormMixin, UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("team:team")
     success_message = "Team member updated successfully."
+    permission_required = "team.change_teammember"
 
 
 class TeamDeleteView(MessageOnDeleteMixin, PermissionRequiredMixin, DeleteView):
@@ -77,13 +80,13 @@ class TeamDeleteView(MessageOnDeleteMixin, PermissionRequiredMixin, DeleteView):
     delete_success_message = "Team member deleted successfully."
 
 
-class TeamCreateView(MessageOnFormMixin, CreateView):
+class TeamCreateView(MessageOnFormMixin, PermissionRequiredMixin, CreateView):
     model = TeamMember
-    fields = "__all__"
     template_name = "team/teamMemberCreate.html"
-    permission_required = "team.create_team"
+    permission_required = "team.add_teammember"
     success_url = reverse_lazy("team:team")
     success_message = "Team member created successfully."
+    form_class = TeamMemberCreateForm
 
 
 class TeamResumeDetailView(DetailView):
@@ -113,7 +116,7 @@ class TeamResumeCreateView(MessageOnFormMixin, CreateView):
     model = Resume
     template_name = "team/teamResumeForm.html"
     fields = ["position", "summary", "experience_years", "education", "skills"]
-    permission_required = "team.create_team"
+    permission_required = "team.add_resume"
     success_message = "Resume created successfully."
 
     def dispatch(self, request, *args, **kwargs):
@@ -279,3 +282,5 @@ class TeamContactDeleteView(MessageOnDeleteMixin, DeleteView):
         context["teamMember"] = self.object.team_member
         return context
 
+class TeamSearchView(View):
+    template_name = "team/teamSearch.html"
