@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from django.db.models.signals import post_migrate
+from django.db.models.signals import post_migrate, post_save
 
 
 class MainConfig(AppConfig):
@@ -7,6 +7,23 @@ class MainConfig(AppConfig):
 
     def ready(self):
         post_migrate.connect(sync_admin_group_permissions, dispatch_uid="main.sync_admin_group_permissions")
+        from django.contrib.auth import get_user_model
+
+        post_save.connect(
+            add_new_user_to_hr_group,
+            sender=get_user_model(),
+            dispatch_uid="main.add_new_user_to_hr_group",
+        )
+
+
+def add_new_user_to_hr_group(sender, instance, created, raw=False, **kwargs):
+    if raw or not created:
+        return
+
+    from django.contrib.auth.models import Group
+
+    hr_group, _ = Group.objects.get_or_create(name="HR")
+    instance.groups.add(hr_group)
 
 
 def sync_admin_group_permissions(sender, **kwargs):

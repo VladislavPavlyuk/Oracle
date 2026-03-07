@@ -8,7 +8,13 @@ from team.models import TeamMember
 class TeamMemberCreateForm(forms.ModelForm):
     class Meta:
         model = TeamMember
-        fields = ["name", "salary", "note"]
+        fields = ["name", "salary", "note", "photo"]
+        labels = {
+            'name': "Name",
+            'salary': "Salary",
+            'note': "Note",
+            'photo': "Photo",
+        }
         help_texts = {
             "name": "Enter a name, please",
         }
@@ -33,6 +39,10 @@ class TeamMemberCreateForm(forms.ModelForm):
                     "rows": 4,
                 }
             ),
+            "photo": forms.ClearableFileInput(attrs={
+                "class": "form-control-file",
+                'accept': "image/*",
+            })
         }
 
     def clean_name(self):

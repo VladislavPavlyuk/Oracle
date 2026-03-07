@@ -8,10 +8,17 @@
 {% endblock %}
 
 {% block content %}
+<h1>Team Members: {{ team_count }}</h1>
     {% if user.is_authenticated %}
         {% if show_hello %}
             <h2>Hello, {{ hello_username }}</h2>
         {% endif %}
+
+        {% for notification in user.notifications.all %}
+            <h2>{{ notification.date_created }} | {{ notification.text }}</h2>
+        {% empty %}
+            <h2>No notifications.</h2>
+        {% endfor %}
     {% else %}
         <h2>You entered as a Guest...</h2>
     {% endif %}

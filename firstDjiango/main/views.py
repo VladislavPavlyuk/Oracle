@@ -1,6 +1,5 @@
 import random
 from django.contrib.auth import login, logout
-from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -69,8 +68,6 @@ class CustomRegisterView(PermissionRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        test_group, _ = Group.objects.get_or_create(name="testGroup")
-        self.object.groups.add(test_group)
         login(self.request, self.object)
         self.request.session["show_hello_once"] = True
         messages.success(self.request, "Account created successfully.")

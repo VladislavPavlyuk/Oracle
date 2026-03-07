@@ -13,53 +13,60 @@
         <p class="team-subtitle">Detailed profile information.</p>
 
         <div class="team-card">
-            <div class="team-detail-grid">
-                <div class="team-detail-label">Name</div>
-                <div class="team-detail-value">{{ teamMember.name }}</div>
-
-                <div class="team-detail-label">Salary</div>
-                <div class="team-detail-value">${{ teamMember.salary }}</div>
-
-                <div class="team-detail-label">Note</div>
-                <div class="team-detail-value">{{ teamMember.note|default:"-" }}</div>
-            </div>
-
-            <div class="team-detail-grid">
-                <div class="team-detail-label">Resume</div>
-                <div class="team-detail-value">
-                    <div class="team-detail-inline">
-                        <span>
-                            {% if resume %}
-                                Available since {{ teamMember.resume.date_created }}
-                            {% else %}
-                                Not created
-                            {% endif %}
-                        </span>
-                        {% if resume %}
-                            <a class="team-btn team-btn-primary" href="{% url 'team:resume_detail' teamMember.id %}">Resume Details</a>
-                        {% elif perms.team.add_resume %}
-                            <a class="team-btn team-btn-info" href="{% url 'team:resume_create' teamMember.id %}">Create Resume</a>
-                        {% endif %}
+            <div class="team-detail-top">
+                {% if teamMember.photo %}
+                    <div class="team-photo-wrap">
+                        <img class="team-photo" src="{{ teamMember.photo.url }}" alt="{{ teamMember.name }}">
                     </div>
-                </div>
-            </div>
+                {% else %}
+                    <div class="team-photo-wrap team-photo-placeholder">No photo</div>
+                {% endif %}
 
-            <div class="team-detail-grid">
-                <div class="team-detail-label">Contacts</div>
-                <div class="team-detail-value">
-                    <div class="team-detail-inline">
-                        <span>
-                            {% if teamMember.contacts.all %}
-                                Available
-                            {% else %}
-                                Not created
+                <div class="team-detail-grid">
+
+                    <div class="team-detail-label">Name</div>
+                    <div class="team-detail-value">{{ teamMember.name }}</div>
+
+                    <div class="team-detail-label">Salary</div>
+                    <div class="team-detail-value">${{ teamMember.salary }}</div>
+
+                    <div class="team-detail-label">Note</div>
+                    <div class="team-detail-value">{{ teamMember.note|default:"-" }}</div>
+
+                    <div class="team-detail-label">Resume</div>
+                    <div class="team-detail-value">
+                        <div class="team-detail-inline">
+                            <span>
+                                {% if resume %}
+                                    Available since {{ teamMember.resume.date_created }}
+                                {% else %}
+                                    Not created
+                                {% endif %}
+                            </span>
+                            {% if resume %}
+                                <a class="team-btn team-btn-primary" href="{% url 'team:resume_detail' teamMember.id %}">Resume Details</a>
+                            {% elif perms.team.add_resume %}
+                                <a class="team-btn team-btn-info" href="{% url 'team:resume_create' teamMember.id %}">Create Resume</a>
                             {% endif %}
-                        </span>
-                        {% if teamMember.contacts.all %}
-                            <a class="team-btn team-btn-primary" href="{% url 'team:contact_detail' teamMember.id teamMember.contacts.first.id %}">Contact Details</a>
-                        {% elif perms.team.add_contact %}
-                            <a class="team-btn team-btn-info" href="{% url 'team:contact_create' teamMember.id %}">Create Contact</a>
-                        {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="team-detail-label">Contacts</div>
+                    <div class="team-detail-value">
+                        <div class="team-detail-inline">
+                            <span>
+                                {% if teamMember.contacts.all %}
+                                    Available
+                                {% else %}
+                                    Not created
+                                {% endif %}
+                            </span>
+                            {% if teamMember.contacts.all %}
+                                <a class="team-btn team-btn-primary" href="{% url 'team:contact_detail' teamMember.id teamMember.contacts.first.id %}">Contact Details</a>
+                            {% elif perms.team.add_contact %}
+                                <a class="team-btn team-btn-info" href="{% url 'team:contact_create' teamMember.id %}">Create Contact</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,4 +83,3 @@
         </div>
     </section>
 {% endblock %}
-

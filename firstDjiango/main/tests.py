@@ -56,7 +56,7 @@ class RegisterPermissionsTests(TestCase):
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 200)
 
-    def test_registered_user_added_to_test_group(self):
+    def test_registered_user_added_to_hr_group(self):
         manager = User.objects.create_user(username="manager", password="pass12345")
         manager.user_permissions.add(Permission.objects.get(codename="add_user"))
         self.client.login(username="manager", password="pass12345")
@@ -72,4 +72,4 @@ class RegisterPermissionsTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         created_user = User.objects.get(username="newuser")
-        self.assertTrue(created_user.groups.filter(name="testGroup").exists())
+        self.assertTrue(created_user.groups.filter(name="HR").exists())

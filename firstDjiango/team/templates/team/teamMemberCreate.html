@@ -13,7 +13,7 @@
         <p class="team-subtitle">Add a new teammate to your roster.</p>
 
         <div class="team-card">
-            <form method="post" class="team-form">
+            <form method="post" class="team-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <div class="team-form-actions">

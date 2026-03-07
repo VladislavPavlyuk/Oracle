@@ -13,7 +13,7 @@
         <p class="team-subtitle">Update profile details and compensation data.</p>
 
         <div class="team-card">
-            <form method="post" class="team-form">
+            <form method="post" class="team-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <div class="team-form-actions">
